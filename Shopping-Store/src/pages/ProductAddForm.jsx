@@ -23,6 +23,24 @@ const AddProductForm = () => {
 	};
 	// [api.reducerPath] : api.reducer
 
+	const handleImageChange = async (e) => {
+		const file = e.target.files[0];
+		const data = new FormData();
+		data.append("file", file);
+		data.append("upload_preset", "our-first-project");
+		data.append("cloud_name", "dmgxpkcvp");
+		const res = await fetch(`https://api.cloudinary.com/v1_1/dmgxpkcvp/image/upload`, {
+			method: "POST",
+			body: data,
+		});
+		const result = await res.json();
+		console.log("Cloudinary Upload Result:", result);
+		setProduct({
+			...product,
+			image: result.secure_url
+		})
+	}
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		await addDoc(collection(db, "products"), product);
@@ -74,13 +92,17 @@ const AddProductForm = () => {
 				<br />
 				<p>Image URL:</p>
 
-				<input
+				{/*<input
 					onChange={handleChange}
 					value={product.image}
 					name="image"
 					style={{ display: "block", width: "80%" }}
 					type="text"
 					required
+				/>*/}
+				<input type="file"
+				 name="image"
+				   onChange={handleImageChange}
 				/>
 				<br />
 				<input type="submit" />

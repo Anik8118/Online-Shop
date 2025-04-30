@@ -3,6 +3,7 @@ import classes from "../form.module.css";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const Login = () => {
 	const emailInputRef = useRef();
@@ -24,6 +25,9 @@ const Login = () => {
 			);
 			if (res.user) {
 				console.log("User logged in successfully", res.user);
+				toast.success("User Logged in Successfull", {
+					position: "top-right"
+				});
 			}
 			setIsLoading(false);
 			setErrorMessage("");
@@ -32,6 +36,9 @@ const Login = () => {
 			setErrorMessage(error.message);
 			setIsLoading(false);
 			console.log(error.message);
+			toast.warning("Invalid Email or Passward", {
+				position: "top-right"
+			})
 		}
 	};
 	return (
