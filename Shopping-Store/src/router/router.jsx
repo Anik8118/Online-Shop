@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import AddProductForm from "../pages/ProductAddForm";
 import PrivateAdminRoute from "../components/PrivateAdminRouter";
 import Cart from "../pages/Cart";
+import Products from "../pages/AllProducts";
 
 
 export const router = createBrowserRouter([
@@ -16,6 +17,11 @@ export const router = createBrowserRouter([
         {path: '/add-product', element: (
             <PrivateAdminRoute>
                 <AddProductForm />
+            </PrivateAdminRoute>
+            )},
+        {path: '/all-products', element: (
+            <PrivateAdminRoute>
+                <Products />
             </PrivateAdminRoute>
             )},
         {path: '/cart', element: <Cart />}

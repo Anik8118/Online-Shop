@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "../firebase";
 import { useNavigate } from "react-router";
+import { useAddProductMutation } from "../features/api/apiSlice";
+import { toast } from "react-toastify";
 
 const AddProductForm = () => {
 	const [product, setProduct] = useState({
@@ -11,6 +11,7 @@ const AddProductForm = () => {
 		description: "",
 	});
 	const navigate = useNavigate();
+	const [addProduct] = useAddProductMutation();
 
 	const handleChange = (e) => {
 		setProduct({
@@ -34,7 +35,7 @@ const AddProductForm = () => {
 			body: data,
 		});
 		const result = await res.json();
-		console.log("Cloudinary Upload Result:", result);
+		//console.log("Cloudinary Upload Result:", result);
 		setProduct({
 			...product,
 			image: result.secure_url
@@ -43,9 +44,11 @@ const AddProductForm = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		await addDoc(collection(db, "products"), product);
+		if(!product.image){
+			toast("Image is uploading, Please wait...");
+		}
+		await addProduct(product);
 		navigate("/");
-		// addDoc()
 	};
 
 	return (
@@ -100,6 +103,12 @@ const AddProductForm = () => {
 					type="text"
 					required
 				/>*/}
+				{product.image && (
+					<img
+					 src={product.img}
+					 alt=""
+					 style={{width: "100px", height: "100px"}}></img>
+				)}
 				<input type="file"
 				 name="image"
 				   onChange={handleImageChange}
