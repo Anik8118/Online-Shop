@@ -1,5 +1,5 @@
 import {createApi, fakeBaseQuery} from "@reduxjs/toolkit/query/react";
-import { addDoc, collection, getDocs, deleteDoc, doc} from "firebase/firestore";
+import { addDoc, collection, getDocs, deleteDoc, doc, updateDoc} from "firebase/firestore";
 import { db } from "../../firebase";
 
 export const apiSlice = createApi({
@@ -25,10 +25,33 @@ export const apiSlice = createApi({
         }),
         addProduct: builder.mutation({
             queryFn: async (product) =>{
-                await addDoc(collection(db, "products"), product);
+                try{
+                    await addDoc(collection(db, "products"), product);
+                    return {data: product}
+                }catch(error){
+                    return {error}
+                }
             },
             invalidatesTags: ["products"],
         }),
+
+        editProduct: builder.mutation({
+            queryFn: async (product) => {
+                try {
+                    const docRef = doc(db, "products", product.id);
+                    const { id, ...updateData } = product;
+                    
+                    edit = await updateDoc(docRef, updateData);
+        
+                    return { data: edit};
+                } catch (error) {
+                    return { error: error.message }; 
+                }
+            },
+            invalidatesTags: ["products"],
+        }),
+        
+
         removeProduct: builder.mutation({
             queryFn: async (id) =>{
                 try{
@@ -46,5 +69,6 @@ export const apiSlice = createApi({
 export const {
     useGetAllProductsQuery,
     useAddProductMutation,
-    useRemoveProductMutation
+    useRemoveProductMutation,
+    useEditProductMutation
 } = apiSlice;

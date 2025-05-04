@@ -5,6 +5,7 @@ import {
 	modifyQuantityOfAnItem,
 	removeItemFromCart,
 } from "../features/cart/cartSlice";
+import EditProduct from "../pages/EditProduct";
 
 function CartItem({ item }) {
 	const [itemQuantity, setItemQuantity] = useState(item.quantity);
@@ -90,6 +91,8 @@ function CartItem({ item }) {
 				>
 					x
 				</button>
+
+				<EditProduct item={item}/>
 			</td>
 		</tr>
 	);

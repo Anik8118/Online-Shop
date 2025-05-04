@@ -72,7 +72,11 @@ const Nav = () => {
 								</button>
 							</li>
 						)}
-					
+						{/* {userLoggedIn && (
+							<li>
+								<Link to='/checkout'>Checkout</Link>
+							</li>
+						)} */}
 					</ul>
 				</nav>
 			</div>

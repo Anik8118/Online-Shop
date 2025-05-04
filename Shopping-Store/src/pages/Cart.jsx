@@ -2,11 +2,15 @@ import { useSelector, useDispatch } from "react-redux";
 
 import CartItem from "../components/CartItem";
 import { clearCart } from "../features/cart/cartSlice";
+import { Link } from "react-router";
+import { useAuth } from "../contexts/Auth";
+
 
 const Cart = () => {
 	const cart = useSelector((storeState) => storeState.cart);
 	const dispatch = useDispatch();
-	console.log(cart);
+
+	const { userLoggedIn } = useAuth();
 
 	let totalPrice = 0;
 	cart.forEach((item) => (totalPrice += item.quantity * item.price));
@@ -46,6 +50,13 @@ const Cart = () => {
 					>
 						Clear Cart
 					</button>
+					{userLoggedIn && 
+						(
+							<button>
+								<Link to='/checkout'>Checkout</Link>
+							</button>
+						)
+					}
 				</div>
 			</div>
 		</>
